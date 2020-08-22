@@ -54,7 +54,7 @@
                                     <span class="bot-line"></span>Dashboard
                                 </a>
                             </li>
-                            <li>
+                            <li class="">
                                 <a href="commerce.html">
                                     <i class="fas fa-cart-arrow-down"></i>
                                     <span class="bot-line"></span>Commerce</a>
@@ -342,12 +342,12 @@
                                                     </span>
                                                 </a>
                                             </li>
-                                            <li class="active ">
+                                            <li class=" ">
                                                 <a href="subscribers.html">
                                                     <i class="fas fa-user"></i>Students</a>
                                                 <span class="inbox-num">127</span>
                                             </li>
-                                            <li>
+                                            <li class="active">
                                                 <a href="subscriber_save_bordereau.html">
                                                     <i class="fas fa-download"></i>Save Bordereau</a>
                                                 <span class="arrow">
@@ -396,12 +396,12 @@
                                                     <span class="au-breadcrumb-span">You are here:</span>
                                                     <ul class="list-unstyled list-inline au-breadcrumb__list">
                                                         <li class="list-inline-item active">
-                                                            <a href="#">Subscribers</a>
+                                                            <a href="subscribers.html">Subscribers</a>
                                                         </li>
                                                         <li class="list-inline-item seprate">
                                                             <span><i class="fas fa-angle-right"></i></span>
                                                         </li>
-                                                        <li class="list-inline-item">Students</li>
+                                                        <li class="list-inline-item">Save Bordereau</li>
                                                     </ul>
                                                 </div>
                                                 <form class="au-form-icon--sm" action="" method="post">
@@ -428,10 +428,10 @@
                                             <i class="zmdi zmdi-check-circle"></i>
                                             <span class="content">You successfully read this important alert message.</span>
                                             <button class="close" type="button" data-dismiss="alert" aria-label="Close">
-																								<span aria-hidden="true">
-																										<i class="zmdi zmdi-close-circle"></i>
-																								</span>
-																						</button>
+                                                    <span aria-hidden="true">
+                                                            <i class="zmdi zmdi-close-circle"></i>
+                                                    </span>
+                                            </button>
                                         </div>
                                         <!-- END ALERT-->
                                     </div>
@@ -444,300 +444,109 @@
                                 <!-- PAGE CONTENT-->
                                 <div class="page-content" style="margin-top: 0px;">
                                     <div class="row">
-
-                                        <div class="col-md-12">
-                                            <h3 class="title-5">student data table</h3>
-                                            <small style="color: #999;">List of all subscribed students </small>
+                                        <div class="col-12">
+                                            <h3 class="title-5 m-b-0">Register a Bordereau</h3>
+                                            <small style="color: #999;">bordereau from subscriber's Students</small>
                                             <div class="m-b-45"></div>
 
                                             <div class="table-data__tool">
                                                 <div class="table-data__tool-left">
-                                                    <div class="rs-select2--light rs-select2--md">
-                                                        <select class="js-select2" name="property">
-                                                                <option selected="selected">All Properties</option>
-                                                                <option value="">Option 1</option>
-                                                                <option value="">Option 2</option>
-                                                        </select>
-                                                        <div class="dropDownSelect2"></div>
-                                                    </div>
-                                                    <div class="rs-select2--light rs-select2--sm">
-                                                        <select class="js-select2" name="time">
-                                                                <option selected="selected">Today</option>
-                                                                <option value="">3 Days</option>
-                                                                <option value="">1 Week</option>
-                                                        </select>
-                                                        <div class="dropDownSelect2"></div>
-                                                    </div>
-                                                    <button class="au-btn-filter">
-                                                        <i class="zmdi zmdi-filter-list"></i>filters</button>
+
                                                 </div>
                                                 <div class="table-data__tool-right">
                                                     <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
-                                                        <i class="zmdi zmdi-plus"></i>add Student
+                                                        <i class="fas fa-check"></i>Submit
                                                     </button>
-
-                                                    <!-- modal large -->
-                                                    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg" style="width: 600px;" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header bg-light">
-                                                                    <h5 class="modal-title" id="largeModalLabel">Add Student</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="##" style="padding: 25px;">
-                                                                    <!-- <div class="card">
-                                                                        <div class="card-body"> -->
-                                                                    <form action="" method="post" novalidate="novalidate">
-                                                                        <div class="form-group">
-                                                                            <label for="cc-payment" class="control-label mb-1">First-name</label>
-                                                                            <input id="cc-pament" name="cc-payment" type="text" class="form-control" aria-required="true" aria-invalid="false">
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="cc-exp" class="control-label mb-1">Second-name</label>
-                                                                                    <input id="cc-exp" name="cc-exp" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
-                                                                                    <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!-- <div class="col-4"> -->
-                                                                            <!-- <label for="x_card_code" class="control-label mb-1">Qtt. Type</label>
-                                                                                <div class="rs-select2--dark rs-select2--sm rs-select2--dark2" style="width:100%;">
-                                                                                    <select class="js-select2" name="type">
-                                                                                            <option selected="selected">Select</option>
-                                                                                            <option value="Pieces">Piece</option>
-                                                                                            <option value="Bottles">Bottle</option>
-                                                                                            <option value="Liters">Liter</option>
-                                                                                    </select>
-                                                                                    <div class="dropDownSelect2"></div>
-                                                                                </div> -->
-
-                                                                            <!-- </div> -->
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="cc-exp" class="control-label mb-1">Last-name</label>
-                                                                                    <input id="cc-exp" name="cc-exp" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
-                                                                                    <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!-- <div class="col-4"> -->
-                                                                            <!-- <label for="x_card_code" class="control-label mb-1">Currency</label>
-                                                                                <div class="rs-select2--dark rs-select2--sm rs-select2--dark2" style="width:100%;">
-                                                                                    <select class="js-select2" name="type">
-                                                                                            <option value="RWF">RWF</option>
-                                                                                            <option value="FC">FC</option>
-                                                                                            <option value="USD">USD</option>
-                                                                                    </select>
-                                                                                    <div class="dropDownSelect2"></div>
-                                                                                </div> -->
-                                                                            <!-- </div> -->
-                                                                        </div>
-                                                                        <div>
-                                                                            <button type="submit" class="btn btn-lg  btn-block  au-btn au-btn-icon au-btn--green au-btn--small">
-                                                                                <span id="payment-button-amount">Add Student</span>
-                                                                                <!-- <i class="fa fa-send"></i> -->
-                                                                                <span id="payment-button-sending" style="display:none;">Adding…</span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </form>
-                                                                    <!-- </div>
-                                                                    </div> -->
-                                                                </div>
-                                                                <div class="modal-footer" style="padding: 14px 25px;">
-                                                                    <button type="" class="btn btn-danger" data-dismiss="modal" style="font-size: 14px;padding: 8px 20px;">Cancel</button>
-                                                                    <button type="" class="btn btn-primary" style="font-size: 14px;padding: 8px 20px;">Confirm</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- end modal large -->
-
-
-                                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" style="background-color: #555;margin-right: 5px;">
-																											<i class="fas fa-copy"></i>Get Report
-																									</button>
+                                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" style="background-color: #555;margin-right: 5px;" data-toggle="modal" data-target="#largeModal">
+                                                        <i class="fas fa-ban"></i>Clean
+                                                    </button>
                                                 </div>
                                             </div>
 
-                                            <style>
-                                                #claimPath {
-                                                    background-color: #eee;
-                                                    padding: 0px 10px 2px;
-                                                    border-radius: 5px;
-                                                    color: #bababa;
-                                                }
-                                                
-                                                #claimPathYes {
-                                                    background-color: #4388e2;
-                                                    padding: 0px 10px 2px;
-                                                    border-radius: 5px;
-                                                    color: #fff;
-                                                }
-                                                
-                                                #advensM {
-                                                    background-color: #f7dc44;
-                                                    padding: 0px 3.5px 2px;
-                                                    margin: 0px 3px 0px;
-                                                    border-radius: 10px;
-                                                    font-size: 12px;
-                                                    color: #fff;
-                                                }
-                                                
-                                                .boxShadow {
-                                                    -webkit-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
-                                                    -moz-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
-                                                    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
-                                                }
-                                                
-                                                .dropdownMore {
-                                                    background: #fff;
-                                                    border: 0.5px solid #dedede;
-                                                    position: absolute;
-                                                    border-radius: 3px;
-                                                    overflow: hidden;
-                                                    margin-top: 40px;
-                                                    z-index: 99;
-                                                }
-                                                
-                                                .dropdownMore a {
-                                                    padding: 10px 15px;
-                                                    width: 100%;
-                                                    transition: none;
-                                                    color: #808080;
-                                                }
-                                                
-                                                .dropdownMore a:hover {
-                                                    background-color: #3265d3;
-                                                    color: #fff;
-                                                }
-                                                
-                                                #p_relativet {
-                                                    position: relative;
-                                                }
-                                            </style>
 
-
-                                            <div class="table-responsive table-responsive-data2">
-                                                <table class="table table-data2">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>First-name</th>
-                                                            <th>Last-name</th>
-                                                            <th>Claiming</th>
-                                                            <th>Payement</th>
-                                                            <th>bigining of the month</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="tr-shadow">
-
-                                                            <td>Vianney</td>
-                                                            <td>Rwicha BASWIRA</td>
-                                                            <td><span id="claimPath"><small><i class="fas fa-ban"></i> claim</small></span></td>
-                                                            <td>
-                                                                <span class="status--process">35000.00 RWF<sub id="advensM"><small>+2</small></sub></span>
-                                                            </td>
-                                                            <td>2020-04-23 02:12</td>
-                                                            <td>
-                                                                <div class="table-data-feature" id="p_relative">
-                                                                    <button class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#largeModal">
-                                                                            <i class="zmdi zmdi-edit"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="zmdi zmdi-delete"></i>
-                                                                    </button>
-                                                                    <button class="item btnMore" data-toggle="tooltip" data-placement="top" title="More">
-                                                                            <i class="zmdi zmdi-more"></i>
-                                                                    </button>
-                                                                    <div class="dropdownMore boxShadow">
-                                                                        <a href="admin_student_view.html">View</a><br/>
-                                                                        <a href="save_bordereau.html?name&other">Payment</a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="spacer"></tr>
-                                                        <tr class="tr-shadow">
-                                                            <td>Sonia</td>
-                                                            <td>Olela EMUNGU</td>
-                                                            <td><span id="claimPathYes"><small><i class="fas fa-check"></i> claim</small></span></td>
-                                                            <td>
-                                                                <span class="status--denied">12000.00 RWF</span>
-                                                            </td>
-                                                            <td>2020-04-23 02:12</td>
-                                                            <td>
-                                                                <div class="table-data-feature">
-                                                                    <button class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#largeModal">
-                                                                            <i class="zmdi zmdi-edit"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="zmdi zmdi-delete"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                                                            <i class="zmdi zmdi-more"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="spacer"></tr>
-                                                        <tr class="tr-shadow">
-
-                                                            <td>Vianney</td>
-                                                            <td>Rwicha BASWIRA</td>
-                                                            <td><span id="claimPath"><small><i class="fas fa-ban"></i> claim</small></span></td>
-                                                            <td>
-                                                                <span class="status--process">35000.00 RWF<sub id="advensM"><small>+2</small></sub></span>
-                                                            </td>
-                                                            <td>2020-04-23 02:12</td>
-                                                            <td>
-                                                                <div class="table-data-feature">
-                                                                    <button class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#largeModal">
-                                                                            <i class="zmdi zmdi-edit"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="zmdi zmdi-delete"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                                                            <i class="zmdi zmdi-more"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="spacer"></tr>
-                                                        <tr class="tr-shadow">
-                                                            <td>Sonia</td>
-                                                            <td>Olela EMUNGU</td>
-                                                            <td><span id="claimPathYes"><small><i class="fas fa-check"></i> claim</small></span></td>
-                                                            <td>
-                                                                <span class="status--denied">12000.00 RWF</span>
-                                                            </td>
-                                                            <td>2020-04-23 02:12</td>
-                                                            <td>
-                                                                <div class="table-data-feature">
-                                                                    <button class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#largeModal">
-                                                                            <i class="zmdi zmdi-edit"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="zmdi zmdi-delete"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="More">
-                                                                            <i class="zmdi zmdi-more"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="spacer"></tr>
-
-                                                    </tbody>
-                                                </table>
+                                            <div class="##" style="margin-right: 7px;">
+                                                <!-- <div class="card">
+                                                    <div class="card-body"> -->
+                                                <style>
+                                                    .control-label {
+                                                        text-transform: uppercase;
+                                                        font-size: 13px;
+                                                        font-weight: 600;
+                                                        color: #555556;
+                                                        padding: 5px 0px;
+                                                    }
+                                                    
+                                                    .boxShadow {
+                                                        -webkit-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+                                                        -moz-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+                                                        box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+                                                    }
+                                                    
+                                                    #myInputForm {
+                                                        padding: 25px;
+                                                        -webkit-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+                                                        -moz-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+                                                        box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+                                                        border: none;
+                                                        font-size: 14px;
+                                                        color: #808080;
+                                                        font-family: "Poppins", sans-serif;
+                                                        font-weight: 400;
+                                                    }
+                                                    
+                                                    .smallComent {
+                                                        font-size: 11px;
+                                                        color: #999;
+                                                        text-transform: lowercase;
+                                                    }
+                                                    
+                                                    .type-file {
+                                                        height: 315px;
+                                                    }
+                                                </style>
+                                                <form action="" method="post" novalidate="novalidate">
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div class="form-group">
+                                                                <label for="cc-exp" class="control-label mb-1">Bordereau <small class="smallComent">selectioner l'image du bordereau...</small></label>
+                                                                <input id="myInputForm" name="cc-exp" type="file" class="form-control cc-exp type-file" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="_" autocomplete="cc-exp">
+                                                                <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <div class="form-group">
+                                                                <label for="cc-exp" class="control-label mb-1">Student <small class="smallComent">name of the student owner...</small></label>
+                                                                <input id="myInputForm" name="cc-exp" type="number" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="_" autocomplete="cc-exp">
+                                                                <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="cc-exp" class="control-label mb-1">Roll Number <small class="smallComent">roll number of the student owner...</small></label>
+                                                                <input id="myInputForm" name="cc-exp" type="number" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="_" autocomplete="cc-exp">
+                                                                <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="cc-exp" class="control-label mb-1">Amount <small class="smallComent">amount of money payed...</small></label>
+                                                                <input id="myInputForm" name="cc-exp" type="number" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="_" autocomplete="cc-exp">
+                                                                <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="cc-exp" class="control-label mb-1">Bank name <small class="smallComent">name of the bank...</small></label>
+                                                        <input id="myInputForm" name="cc-exp" type="number" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="_" autocomplete="cc-exp">
+                                                        <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="cc-exp" class="control-label mb-1">Account ID <small class="smallComent">account number...</small></label>
+                                                        <input id="myInputForm" name="cc-exp" type="number" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="_" autocomplete="cc-exp">
+                                                        <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                    </div>
+                                                </form>
+                                                <!-- </div>
+                                                </div> -->
                                             </div>
-                                        </div>
 
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- END PAGE CONTENT-->
@@ -790,7 +599,6 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-    <script src="js/animation.js"></script>
 
 </body>
 

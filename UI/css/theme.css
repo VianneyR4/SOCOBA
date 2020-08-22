@@ -13344,3 +13344,90 @@ section {
         overflow-y: none;
     }
 }
+
+.bordereau-content {
+    background-color: #fff;
+    padding: 0px;
+    margin: 15px 0px;
+    -webkit-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+    -moz-box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.03);
+    border: none;
+    font-size: 14px;
+    color: #808080;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+}
+
+.bordereau-content .header {
+    width: 100%;
+    padding: 10px 30px !important;
+    margin: auto;
+}
+
+.bordereau-content .header .threePoint {
+    text-align: right;
+    padding: 0px !important;
+    font-size: 20px;
+}
+
+.bordereau-content .body {
+    border: 1px solid grey;
+    height: 220px;
+}
+
+.bordereau-content .footer h2,
+.bordereau-content .footer p {
+    padding: 0px 18px;
+}
+
+.bordereau-content .footer h2 {
+    margin: 20px 0px 10px;
+}
+
+.bordereau-content .footer h2 sup {
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.bordereau-content .footer .for-detail {
+    display: grid;
+    grid-template-columns: 50% auto;
+}
+
+.bordereau-content .footer p {
+    font-size: 12px;
+}
+
+.bordereau-content .footer p span {
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+}
+
+.bordereau-content .footer .under-footer {
+    display: grid;
+    grid-template-columns: 50% auto;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.bordereau-content .footer .under-footer .f-left {
+    border-right: 1px solid #eee;
+}
+
+.bordereau-content .footer .under-footer div {
+    padding: 10px;
+}
+
+.bordereau-content .footer .under-footer div i {
+    margin-left: 3px;
+}
+
+.bordereau-content .footer .under-footer div i.fa-edit {
+    color: #ffc518;
+}
+
+.bordereau-content .footer .under-footer div i.fa-ban {
+    color: #ee0979;
+}
