@@ -107,7 +107,8 @@
 
     <script>
         const API_URL = "http://localhost:3000/api/v1/admin/profile";
-        fetch("http://jsonplaceholder.typicode.com/posts")
+        // http://jsonplaceholder.typicode.com/posts
+        fetch(API_URL)
             .then(res => res.json())
             .then(data => {
                 console.log('Response: ', data);
@@ -117,14 +118,7 @@
             })
 
         function loginfunc() {
-            fetch(API_URL)
-                .then(res => res.json())
-                .then(data => {
-                    console.log('Response: ', data);
-                })
-                .catch(err => {
-                    console.log('ERROR: ', err);
-                })
+
         }
     </script>
 
