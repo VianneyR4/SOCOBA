@@ -21,6 +21,8 @@
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!--===============================================================================================-->
+    <script src="lib/w3Data.js"></script>
+    <!--===============================================================================================-->
 </head>
 
 <body>
@@ -53,7 +55,7 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
+                        <button class="login100-form-btn" onclick="loginfunc()">
 							Login
 						</button>
                     </div>
@@ -80,7 +82,11 @@
 
 
 
-
+    <!--===============================================================================================-->
+    <!--===============================================================================================-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <script src="https://unpkg.com/vue-router@2.0.0"></script>
+    <!--===============================================================================================-->
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->
@@ -97,6 +103,30 @@
     </script>
     <!--===============================================================================================-->
     <script src="js/mainLogin.js"></script>
+
+
+    <script>
+        const API_URL = "http://localhost:3000/api/v1/admin/profile";
+        fetch("http://jsonplaceholder.typicode.com/posts")
+            .then(res => res.json())
+            .then(data => {
+                console.log('Response: ', data);
+            })
+            .catch(err => {
+                console.log('ERROR: ', err);
+            })
+
+        function loginfunc() {
+            fetch(API_URL)
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Response: ', data);
+                })
+                .catch(err => {
+                    console.log('ERROR: ', err);
+                })
+        }
+    </script>
 
 </body>
 
