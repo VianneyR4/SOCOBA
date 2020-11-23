@@ -33,7 +33,7 @@
                     <img src="images/img-01.png" alt="IMG">
                 </div>
 
-                <form class="login100-form validate-form">
+                <div class="login100-form validate-form">
                     <span class="login100-form-title">
 						Admin Login
 					</span>
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn" onclick="loginfunc()">
+                        <button class="login100-form-btn submit-btn" onclick="loginVerification()">
 							Login
 						</button>
                     </div>
@@ -75,7 +75,7 @@
 							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 						</a>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -106,18 +106,29 @@
 
 
     <script>
-        const API_URL = "http://localhost:3000/api/v1/admin/profile";
-        // http://jsonplaceholder.typicode.com/posts
-        fetch(API_URL)
-            .then(res => res.json())
-            .then(data => {
-                console.log('Response: ', data);
-            })
-            .catch(err => {
-                console.log('ERROR: ', err);
-            })
-
-        function loginfunc() {
+        const loginVerification = () => {
+            let email = document.getElementsByName("email")[0].value;
+            let password = document.getElementsByName("pass")[0].value;
+            const API_URL = "http://127.0.0.1:3000/api/v1/admin/login";
+            // http://jsonplaceholder.typicode.com/posts
+            fetch(API_URL, {
+                    method: "Post",
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                    }),
+                    headers: {
+                        'Content-type': "application/json",
+                        'Access-Control-Allow-Origin': "*"
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Response: ', data);
+                })
+                .catch(err => {
+                    console.log('ERROR: ', err);
+                })
 
         }
     </script>
