@@ -33,13 +33,13 @@
                     <img src="images/img-01.png" alt="IMG">
                 </div>
 
-                <div class="login100-form validate-form">
+                <div action="" method="POST" class="login100-form validate-form">
                     <span class="login100-form-title">
 						Admin Login
 					</span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" type="text" name="email" placeholder="Email">
+                        <input class="input100" id="input1" type="text" name="email" placeholder="Email">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="password" name="pass" placeholder="Password">
+                        <input class="input100" id="input2" type="password" name="pass" placeholder="Password">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="container-login100-form-btn">
-                        <button class="login100-form-btn submit-btn" onclick="loginVerification()">
+                        <button class="login100-form-btn submit-btn" id="submit" onclick="loginVerification()">
 							Login
 						</button>
                     </div>
@@ -69,7 +69,19 @@
 						</a>
                     </div>
 
-                    <div class="text-center p-t-100">
+                    <center>
+                        <br/>
+                        <img id="loader" height="40" src="images/icons/loader.gif" />
+
+                        <div class="alert alert-danger alert-dismissible fade" id="myAlert" role="alert">
+                            <strong>Error!</strong> <span id="inarMessage"></span>
+                            <button type="button" class="close" onclick="hideAlert()" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </center>
+
+                    <div class="text-center p-t-10">
                         <a class="txt2" href="#">
 							Create your Account
 							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
@@ -101,37 +113,68 @@
             scale: 1.1
         })
     </script>
+
     <!--===============================================================================================-->
     <script src="js/mainLogin.js"></script>
+    <!--===============================================================================================-->
+    <!--===============================================================================================-->
 
-
+    <script src="api/admin.js"></script>
     <script>
+        let submit1 = document.getElementById("input1");
+        submit1.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("submit").click();
+            }
+        });
+        let submit2 = document.getElementById("input2");
+        submit2.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("submit").click();
+            }
+        });
+
+        const hideAlert = () => {
+            document.getElementById("myAlert").classList.remove("show");
+        };
+
+        let loaderElement = document.getElementById("loader");
+        loaderElement.style.display = "none";
+
         const loginVerification = () => {
+
             let email = document.getElementsByName("email")[0].value;
             let password = document.getElementsByName("pass")[0].value;
-            const API_URL = "http://127.0.0.1:3000/api/v1/admin/login";
-            // http://jsonplaceholder.typicode.com/posts
-            fetch(API_URL, {
-                    method: "Post",
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                    }),
-                    headers: {
-                        'Content-type': "application/json",
-                        'Access-Control-Allow-Origin': "*"
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    console.log('Response: ', data);
-                })
-                .catch(err => {
-                    console.log('ERROR: ', err);
-                })
+            let varErrorMsg = null;
 
+            login(email, password).then((response) => {
+
+                // loaderElement.style.display = "block";
+
+                if (response.status != 400) {
+                    window.location = SOURCE_URL + "UI/Admin/index.html";
+                    localStorage.setItem("token", response.token);
+                    localStorage.setItem("id", response.adminId);
+                } else {
+                    if (response.message == "Email not found!") {
+                        document.getElementById("inarMessage").innerHTML = response.message
+                        document.getElementById("myAlert").classList.toggle("show");
+                    } else if (response.message == "Invalid password!") {
+                        document.getElementById("inarMessage").innerHTML = response.message
+                        document.getElementById("myAlert").classList.toggle("show");
+                    } else {
+                        document.getElementById("inarMessage").innerHTML = response.message
+                        document.getElementById("myAlert").classList.toggle("show");
+                    }
+                }
+            })
+
+            loaderElement.style.display = "none";
         }
     </script>
+    <!--===============================================================================================-->
 
 </body>
 
