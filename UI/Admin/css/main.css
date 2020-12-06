@@ -507,3 +507,22 @@ iframe {
         opacity: 1;
     }
 }
+
+
+/* 
+===============================
+            Add
+=============================== */
+
+.topRight {
+    width: 30%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 20px 3px;
+}
+
+.topRight button {
+    margin: 13px 15px -15px!important;
+    padding: 0px !important;
+}

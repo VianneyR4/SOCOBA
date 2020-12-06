@@ -27,6 +27,13 @@
 
 <body>
     <div class="limiter">
+        <div class="alert topRight alert-danger alert-dismissible fade" id="myAlert2" role="alert">
+            <strong>Error!</strong> <span id="inarMessage2"></span>
+            <button type="button" class="close" onclick="hideAlert2()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
         <div class="container-login100">
             <div class="wrap-login100">
                 <div class="login100-pic js-tilt" data-tilt>
@@ -71,15 +78,16 @@
 
                     <center>
                         <br/>
-                        <img id="loader" height="40" src="images/icons/loader.gif" />
-
-                        <div class="alert alert-danger alert-dismissible fade" id="myAlert" role="alert">
-                            <strong>Error!</strong> <span id="inarMessage"></span>
-                            <button type="button" class="close" onclick="hideAlert()" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                        <img id="loader" height="40" src="images/icons/loader.gif" style="display: none;" />
                     </center>
+
+                    <div class="alert alert-danger alert-dismissible fade" id="myAlert" role="alert">
+                        <strong>Error!</strong> <span id="inarMessage"></span>
+                        <button type="button" class="close" onclick="hideAlert()" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
 
                     <div class="text-center p-t-10">
                         <a class="txt2" href="#">
@@ -121,6 +129,29 @@
 
     <script src="api/admin.js"></script>
     <script>
+        let url_string = window.location.href;
+        let url = new URL(url_string);
+        let getStatut = url.searchParams.get("status");
+        console.log("Error Status: ", getStatut);
+
+        function funcTimeOut() {
+            let myVar = setTimeout(hideAlert2, 5000);
+        }
+
+        const hideAlert2 = () => {
+            document.getElementById("myAlert2").classList.remove("show");
+        };
+
+        if (getStatut != null) {
+            document.getElementById("myAlert2").classList.add("show");
+            funcTimeOut();
+            if (getStatut == 0) {
+                document.getElementById("inarMessage2").innerHTML = "You mast login first!";
+            } else if (getStatut == 1) {
+                document.getElementById("inarMessage2").innerHTML = "Your session has expired!";
+            }
+        }
+
         let submit1 = document.getElementById("input1");
         submit1.addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
@@ -136,14 +167,14 @@
             }
         });
 
-        const hideAlert = () => {
-            document.getElementById("myAlert").classList.remove("show");
-        };
 
         let loaderElement = document.getElementById("loader");
-        loaderElement.style.display = "none";
+        // loaderElement.style.display = "none";
 
         const loginVerification = () => {
+
+            loaderElement.style.display = "block";
+            document.getElementById("myAlert").classList.remove("show");
 
             let email = document.getElementsByName("email")[0].value;
             let password = document.getElementsByName("pass")[0].value;
@@ -152,28 +183,39 @@
             if (email != "" && password != "") {
                 login(email, password).then((response) => {
 
-                    // loaderElement.style.display = "block";
 
-                    if (response.status != 400) {
-                        window.location = SOURCE_URL + "UI/Admin/index.html";
-                        localStorage.setItem("token", response.token);
-                        localStorage.setItem("id", response.adminId);
-                    } else {
-                        if (response.message == "Email not found!") {
-                            document.getElementById("inarMessage").innerHTML = response.message
-                            document.getElementById("myAlert").classList.toggle("show");
-                        } else if (response.message == "Invalid password!") {
-                            document.getElementById("inarMessage").innerHTML = response.message
-                            document.getElementById("myAlert").classList.toggle("show");
+                        if (response.status != 400) {
+                            window.location = SOURCE_URL + "UI/Admin/index.html";
+                            localStorage.setItem("token", response.token);
+                            localStorage.setItem("id", response.adminId);
+                            loaderElement.style.display = "none";
                         } else {
-                            document.getElementById("inarMessage").innerHTML = response.message
-                            document.getElementById("myAlert").classList.toggle("show");
+                            if (response.message == "Email not found!") {
+                                document.getElementById("inarMessage").innerHTML = response.message
+                                document.getElementById("myAlert").classList.toggle("show");
+                                loaderElement.style.display = "none";
+                            } else if (response.message == "Invalid password!") {
+                                document.getElementById("inarMessage").innerHTML = response.message
+                                document.getElementById("myAlert").classList.toggle("show");
+                                loaderElement.style.display = "none";
+                            } else {
+                                document.getElementById("inarMessage").innerHTML = response.message
+                                document.getElementById("myAlert").classList.toggle("show");
+                                loaderElement.style.display = "none";
+                            }
                         }
-                    }
-                })
+                    })
+                    .catch((err) => {
+                        document.getElementById("inarMessage").innerHTML = "Server error!"
+                        document.getElementById("myAlert").classList.toggle("show");
+                        loaderElement.style.display = "none";
+                    })
             }
-            loaderElement.style.display = "none";
         }
+
+        const hideAlert = () => {
+            document.getElementById("myAlert").classList.remove("show");
+        };
     </script>
     <!--===============================================================================================-->
 
