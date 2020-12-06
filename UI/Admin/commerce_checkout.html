@@ -64,11 +64,7 @@
                                     <i class="fas fa-star"></i>
                                     <span class="bot-line"></span>Subscribers</a>
                             </li>
-                            <li class="has-sub">
-                                <a href="staff.html">
-                                    <i class="fas fa-desktop"></i>
-                                    <span class="bot-line"></span>Staff</a>
-                            </li>
+
                             <li class="has-sub">
                                 <a href="#">
                                     <i class="fas fa-copy"></i>
@@ -267,13 +263,15 @@
                 </div>
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
-                        <div class="image">
+                        <!-- <div class="d-flex" > -->
+                        <div class="image" @click="showAccountDropdownVar==false? showAccountDropdownVar=true : showAccountDropdownVar=false">
                             <img src="images/icon/avatar-01.jpg" alt="Vianney R" />
                         </div>
-                        <div class="content">
-                            <a class="js-acc-btn" href="#">Vianney R</a>
+                        <div class="content" @click="showAccountDropdownVar==false? showAccountDropdownVar=true : showAccountDropdownVar=false">
+                            <a class="js-acc-btn" href="#">{{ admin.fname }} {{ admin.lname }}</a>
                         </div>
-                        <div class="account-dropdown js-dropdown">
+                        <!-- </div> -->
+                        <div class="account-dropdown js-dropdown" :class="showAccountDropdownVar? 'show' : ''">
                             <div class="info clearfix">
                                 <div class="image">
                                     <a href="#">
@@ -282,9 +280,9 @@
                                 </div>
                                 <div class="content">
                                     <h5 class="name">
-                                        <a href="#">Vianney R</a>
+                                        <a href="#">{{ admin.fname }} {{ admin.lname }}</a>
                                     </h5>
-                                    <span class="email">vr@socoba.com</span>
+                                    <span class="email">{{ admin.email }}</span>
                                 </div>
                             </div>
                             <div class="account-dropdown__body">
@@ -296,13 +294,9 @@
                                     <a href="#">
                                         <i class="zmdi zmdi-settings"></i>Setting</a>
                                 </div>
-                                <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                </div>
                             </div>
                             <div class="account-dropdown__footer">
-                                <a href="#">
+                                <a href="#" onclick="logout()">
                                     <i class="zmdi zmdi-power"></i>Logout</a>
                             </div>
                         </div>
@@ -589,6 +583,20 @@
     <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="vendor/select2/select2.min.js">
+    </script>
+
+    <!-- Main JS-->
+    <script src="js/main.js"></script>
+    <script src="components/sidebar.js"></script>
+
+
+    <!--===============================================================================================-->
+    <!--===============================================================================================-->
+
+    <script src="api/admin.js"></script>
+    <script src="api/session.js"></script>
+    <script>
+    </script>
     </script>
 
     <!-- Main JS-->
