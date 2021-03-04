@@ -247,7 +247,7 @@
                 if (isEnabled('m')) {
                     if (isEnabled('h')) {
                         topRow.append($('<td>').addClass('separator'));
-                        middleRow.append($('<td>').addClass('separator').html(':'));
+                        middleRow.append($('<td>').addClass('separator').php(':'));
                         bottomRow.append($('<td>').addClass('separator'));
                     }
                     topRow.append($('<td>')
@@ -262,7 +262,7 @@
                 if (isEnabled('s')) {
                     if (isEnabled('m')) {
                         topRow.append($('<td>').addClass('separator'));
-                        middleRow.append($('<td>').addClass('separator').html(':'));
+                        middleRow.append($('<td>').addClass('separator').php(':'));
                         bottomRow.append($('<td>').addClass('separator'));
                     }
                     topRow.append($('<td>')
@@ -642,7 +642,7 @@
                     startYear.add(1, 'y');
                 }
 
-                yearsView.find('td').html(html);
+                yearsView.find('td').php(html);
             },
 
             updateDecades = function () {
@@ -681,7 +681,7 @@
                 }
                 html += '<span></span><span></span><span></span>'; //push the dangling block over, at least this way it's even
 
-                decadesView.find('td').html(html);
+                decadesView.find('td').php(html);
                 decadesViewHeader.eq(1).text((startedAt.year() + 1) + '-' + (startDecade.year()));
             },
 

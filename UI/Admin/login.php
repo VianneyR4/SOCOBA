@@ -185,7 +185,7 @@
 
 
                         if (response.status != 400) {
-                            window.location = SOURCE_URL + "UI/Admin/index.html";
+                            window.location = "index.php";
                             localStorage.setItem("token", response.token);
                             localStorage.setItem("id", response.adminId);
                             loaderElement.style.display = "none";

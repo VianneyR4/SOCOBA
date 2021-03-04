@@ -1540,7 +1540,7 @@ var Dropdown = function ($) {
       // if this is a touch-enabled device we add extra
       // empty mouseover listeners to the body's immediate children;
       // only needed because of broken event delegation on iOS
-      // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+      // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.php
       if ('ontouchstart' in document.documentElement && !$(parent).closest(Selector.NAVBAR_NAV).length) {
         $('body').children().on('mouseover', null, $.noop);
       }
@@ -3230,7 +3230,7 @@ var Tooltip = function ($) {
         // if this is a touch-enabled device we add extra
         // empty mouseover listeners to the body's immediate children;
         // only needed because of broken event delegation on iOS
-        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
+        // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.php
         if ('ontouchstart' in document.documentElement) {
           $('body').children().on('mouseover', null, $.noop);
         }
@@ -3334,7 +3334,7 @@ var Tooltip = function ($) {
     };
 
     Tooltip.prototype.setElementContent = function setElementContent($element, content) {
-      var html = this.config.html;
+      var html = this.config.php;
       if ((typeof content === 'undefined' ? 'undefined' : _typeof(content)) === 'object' && (content.nodeType || content.jquery)) {
         // content is a DOM node or a jQuery
         if (html) {

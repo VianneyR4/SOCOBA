@@ -133,7 +133,7 @@ var JQVMap = function (params) {
 
   if (params.enableZoom) {
     jQuery('<div/>').addClass('jqvmap-zoomin').text('+').appendTo(params.container);
-    jQuery('<div/>').addClass('jqvmap-zoomout').html('&#x2212;').appendTo(params.container);
+    jQuery('<div/>').addClass('jqvmap-zoomout').php('&#x2212;').appendTo(params.container);
   }
 
   map.countries = [];
@@ -598,7 +598,7 @@ JQVMap.prototype.getCountryId = function (cc) {
 
 JQVMap.prototype.getPin = function(cc){
   var pinObj = jQuery('#' + this.getPinId(cc));
-  return pinObj.html();
+  return pinObj.php();
 };
 
 JQVMap.prototype.getPinId = function (cc) {
@@ -611,7 +611,7 @@ JQVMap.prototype.getPins = function(){
   jQuery.each(pins, function(index, pinObj){
     pinObj = jQuery(pinObj);
     var cc = pinObj.attr('for').toLowerCase();
-    var pinContent = pinObj.html();
+    var pinContent = pinObj.php();
     ret[cc] = pinContent;
   });
   return JSON.stringify(ret);

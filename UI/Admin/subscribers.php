@@ -1,3 +1,98 @@
+<?php
+    require_once("includes/function.php");
+    session_start();
+    if (isset($_POST['Add_subscriber'])){
+        if(!empty($_POST['fname']) && !empty($_POST['sname']) && !empty($_POST['rn']) && !empty($_POST['phone']) && !empty($_POST['email']) && !empty($_POST['gender'])){
+              
+			if (isset($_FILES['avatar'])) {
+				# code...
+				$avatar_name = $_FILES["avatar"]["name"];
+				$avatar_tmp = $_FILES["avatar"]["tmp_name"];
+            } else{
+                $avatar_name = "none";
+            }
+
+            $address = "none";
+            $defaultPassword = "123456";
+            $isActive = 1;
+
+            $query_verif_rn = $db->prepare("SELECT * FROM subscribers WHERE roll_number=:roll_number");
+            $query_verif_rn->execute(array("roll_number" => $_POST['rn']));
+            foreach($query_verif_rn as $verif_rn_data){
+                $rn_found = $verif_rn_data;
+            }
+            if (!isset($rn_found)){
+                
+                $query_verif_email = $db->prepare("SELECT * FROM subscribers WHERE email=:email");
+                $query_verif_email->execute(array("email" => $_POST['email']));
+                foreach($query_verif_email as $verif_email_data){
+                    $email_found = $verif_email_data;
+                }
+                if (!isset($email_found)){
+                    $query_register_subscriber = $db->prepare("INSERT INTO subscribers(f_name,s_name,roll_number,phone,addres,gender,avatar,email,password,isClaimed,isActive) VALUES(:f_name,:s_name,:roll_number,:phone,:addres,:gender,:avatar,:email,:password,:isClaimed,:isActive)");
+                    $query_register_subscriber->execute(array(
+                        "f_name" => $_POST['fname'],
+                        "s_name" => $_POST['sname'],
+                        "roll_number" => $_POST['rn'],
+                        "phone" => $_POST['phone'],
+                        "addres" => $address,
+                        "gender" => $_POST['gender'],
+                        "avatar" => $avatar_name,
+                        "email" => $_POST['email'],
+                        "password" => $defaultPassword,
+                        "isClaimed" => 0,
+                        "isActive" => $isActive
+                    ));
+                    
+                    if (isset($_FILES['avatar'])) {
+                        # code...
+                        move_uploaded_file($avatar_tmp, "uploads/".$avatar_name);
+                    }
+                    $msg = "Successfull!   [Defeault password: '123456']";
+                } else {
+                    $msgError = "Use a deffrent email addres, because this one is already used!";
+                }
+
+            } else {
+                $msgError = "Use a deffrent roll-number, because this one is already used!";
+            }
+        } else {
+            $msgError = "You must fill out all fields!";
+        }
+    }
+
+    
+    if (isset($_POST['Update_subscriber'])){
+        if(!empty($_POST['fname']) && !empty($_POST['sname']) && !empty($_POST['rn']) && !empty($_POST['phone']) && !empty($_POST['email']) && !empty($_POST['gender'])){
+            
+            $query_update_subscriber = $db->prepare("UPDATE subscribers SET f_name=:f_name, s_name=:s_name, roll_number=:roll_number, phone=:phone, gender=:gender,  email=:email  WHERE id=:id");
+            $query_update_subscriber->execute(array(
+                "f_name" => $_POST['fname'],
+                "s_name" => $_POST['sname'],
+                "roll_number" => $_POST['rn'],
+                "phone" => $_POST['phone'],
+                "gender" => $_POST['gender'],
+                "email" => $_POST['email'],
+                "id" => $_POST['idItem']
+            ));
+
+            $msg = "Subscriber updated successfully";
+        } else {
+            $msgError = "You must fill out all fields!";
+        }
+    }
+
+    
+    if (isset($_GET['item_id'])){
+        $query_deleteItem = $db->prepare("UPDATE subscribers SET isActive=:isActive WHERE id=:id");
+        $query_deleteItem->execute(array(
+            "isActive" => 0,
+            "id" => $_GET['item_id']
+        ));
+        $msgError = "Item deleted successfully";
+    } 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +117,7 @@
     <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
-    <link href="vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <!-- <link href="vendor/animsition/animsition.min.css" rel="stylesheet" media="all"> -->
     <link href="vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
     <link href="vendor/wow/animate.css" rel="stylesheet" media="all">
     <link href="vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
@@ -37,279 +132,8 @@
 
 <body class="animsition">
     <div class="page-wrapper">
-        <!-- HEADER DESKTOP-->
-        <header class="header-desktop3 d-none d-lg-block">
-            <div class="section__content section__content--p35">
-                <div class="header3-wrap">
-                    <div class="header__logo">
-                        <a href="#">
-                            <img src="images/icon/logo-white.png" alt="CoolAdmin" />
-                        </a>
-                    </div>
-                    <div class="header__navbar">
-                        <ul class="list-unstyled">
-                            <li class="has-sub">
-                                <a href="index.html">
-                                    <i class="fas fa-desktop"></i>
-                                    <span class="bot-line"></span>Dashboard
-                                </a>
-                            </li>
-                            <li>
-                                <a href="commerce.html">
-                                    <i class="fas fa-cart-arrow-down"></i>
-                                    <span class="bot-line"></span>Commerce</a>
-                            </li>
-                            <li class="active">
-                                <a href="subscribers.html">
-                                    <i class="fas fa-star"></i>
-                                    <span class="bot-line"></span>Subscribers</a>
-                            </li>
-
-                            <li class="has-sub">
-                                <a href="#">
-                                    <i class="fas fa-copy"></i>
-                                    <span class="bot-line"></span>Reports</a>
-                                <ul class="header3-sub-list list-unstyled">
-                                    <li>
-                                        <a href="commerce_report.html">Commerce Report</a>
-                                    </li>
-                                    <li>
-                                        <a href="borrowing_report.html">Borrowing Report</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="header__tool">
-
-                        <div class="header-button-item has-noti js-item-menu">
-                            <i class="zmdi zmdi-notifications"></i>
-                            <div class="notifi-dropdown js-dropdown">
-                                <div class="notifi__title">
-                                    <p>You have 3 Notifications</p>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c1 img-cir img-40">
-                                        <i class="zmdi zmdi-email-open"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>You got a email notification</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c2 img-cir img-40">
-                                        <i class="zmdi zmdi-account-box"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>Your account has been blocked</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__item">
-                                    <div class="bg-c3 img-cir img-40">
-                                        <i class="zmdi zmdi-file-text"></i>
-                                    </div>
-                                    <div class="content">
-                                        <p>You got a new file</p>
-                                        <span class="date">April 12, 2018 06:50</span>
-                                    </div>
-                                </div>
-                                <div class="notifi__footer">
-                                    <a href="#">All notifications</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="account-wrap">
-                            <div class="account-item account-item--style2 clearfix js-item-menu">
-                                <div class="image">
-                                    <img src="images/icon/avatar-01.jpg" alt="Vianney R" />
-                                </div>
-                                <div class="content">
-                                    <a class="js-acc-btn" href="#">Vianney R</a>
-                                </div>
-                                <div class="account-dropdown js-dropdown">
-                                    <div class="info clearfix">
-                                        <div class="image">
-                                            <a href="#">
-                                                <img src="images/icon/avatar-01.jpg" alt="Vianney R" />
-                                            </a>
-                                        </div>
-                                        <div class="content">
-                                            <h5 class="name">
-                                                <a href="#">Vianney R</a>
-                                            </h5>
-                                            <span class="email">vr@socoba.com</span>
-                                        </div>
-                                    </div>
-                                    <div class="account-dropdown__body">
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-account"></i>Account</a>
-                                        </div>
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-settings"></i>Setting</a>
-                                        </div>
-                                        <div class="account-dropdown__item">
-                                            <a href="#">
-                                                <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                        </div>
-                                    </div>
-                                    <div class="account-dropdown__footer">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-power"></i>Logout</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- END HEADER DESKTOP-->
-
-        <!-- HEADER MOBILE-->
-        <header class="header-mobile header-mobile-2 d-block d-lg-none">
-            <div class="header-mobile__bar">
-                <div class="container-fluid">
-                    <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
-                            <img src="images/icon/logo-white.png" alt="CoolAdmin" />
-                        </a>
-                        <button class="hamburger hamburger--slider" type="button">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <nav class="navbar-mobile">
-                <div class="container-fluid">
-                    <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="commerce.html">
-                                <i class="fas fa-cart-arrow-down"></i>Commerce</a>
-                        </li>
-                        <li class="active">
-                            <a href="subscribers.html">
-                                <i class="fas fa-star"></i>Subscribers</a>
-                        </li>
-                        <li class="has-sub">
-                            <a href="staff.html">
-                                <i class="fas fa-desktop"></i>Staff</a>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>Reports</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="commerce_report.html">Commerce Report</a>
-                                </li>
-                                <li>
-                                    <a href="borrowing_report.html">Borrowing Report</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-
-        <div class="sub-header-mobile-2 d-block d-lg-none">
-            <div class="header__tool">
-                <div class="header-button-item has-noti js-item-menu">
-                    <i class="zmdi zmdi-notifications"></i>
-                    <div class="notifi-dropdown notifi-dropdown--no-bor js-dropdown">
-                        <div class="notifi__title">
-                            <p>You have 3 Notifications</p>
-                        </div>
-                        <div class="notifi__item">
-                            <div class="bg-c1 img-cir img-40">
-                                <i class="zmdi zmdi-email-open"></i>
-                            </div>
-                            <div class="content">
-                                <p>You got a email notification</p>
-                                <span class="date">April 12, 2018 06:50</span>
-                            </div>
-                        </div>
-                        <div class="notifi__item">
-                            <div class="bg-c2 img-cir img-40">
-                                <i class="zmdi zmdi-account-box"></i>
-                            </div>
-                            <div class="content">
-                                <p>Your account has been blocked</p>
-                                <span class="date">April 12, 2018 06:50</span>
-                            </div>
-                        </div>
-                        <div class="notifi__item">
-                            <div class="bg-c3 img-cir img-40">
-                                <i class="zmdi zmdi-file-text"></i>
-                            </div>
-                            <div class="content">
-                                <p>You got a new file</p>
-                                <span class="date">April 12, 2018 06:50</span>
-                            </div>
-                        </div>
-                        <div class="notifi__footer">
-                            <a href="#">All notifications</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="account-wrap">
-                    <div class="account-item account-item--style2 clearfix js-item-menu">
-                        <!-- <div class="d-flex" > -->
-                        <div class="image" @click="showAccountDropdownVar==false? showAccountDropdownVar=true : showAccountDropdownVar=false">
-                            <img src="images/icon/avatar-01.jpg" alt="Vianney R" />
-                        </div>
-                        <div class="content" @click="showAccountDropdownVar==false? showAccountDropdownVar=true : showAccountDropdownVar=false">
-                            <a class="js-acc-btn" href="#">{{ admin.fname }} {{ admin.lname }}</a>
-                        </div>
-                        <!-- </div> -->
-                        <div class="account-dropdown js-dropdown" :class="showAccountDropdownVar? 'show' : ''">
-                            <div class="info clearfix">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="images/icon/avatar-01.jpg" alt="Vianney R" />
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h5 class="name">
-                                        <a href="#">{{ admin.fname }} {{ admin.lname }}</a>
-                                    </h5>
-                                    <span class="email">{{ admin.email }}</span>
-                                </div>
-                            </div>
-                            <div class="account-dropdown__body">
-                                <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                </div>
-                                <div class="account-dropdown__item">
-                                    <a href="#">
-                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                </div>
-                            </div>
-                            <div class="account-dropdown__footer">
-                                <a href="#" onclick="logout()">
-                                    <i class="zmdi zmdi-power"></i>Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END HEADER MOBILE -->
-
-
-
-
-
+       
+       <?php require_once("components/topbar.php"); ?>
 
         <!-- PAGE CONTENT-->
         <div class="page-content--bgf7">
@@ -329,7 +153,7 @@
                                     <nav class="navbar-sidebar2 navbar-sidebar3">
                                         <ul class="list-unstyled navbar__list">
                                             <li class="has-sub">
-                                                <a href="index.html">
+                                                <a href="index.php">
                                                     <i class="fas fa-desktop"></i>Dashboard
                                                     <span class="arrow">
                                                             <i class="fas fa-angle-right"></i>
@@ -337,38 +161,33 @@
                                                 </a>
                                             </li>
                                             <li class="active ">
-                                                <a href="subscribers.html">
+                                                <a href="subscribers.php">
                                                     <i class="fas fa-user"></i>Students</a>
                                                 <span class="inbox-num">127</span>
                                             </li>
                                             <li>
-                                                <a href="subscriber_save_bordereau.html">
+                                                <a href="subscriber_save_bordereau.php">
                                                     <i class="fas fa-download"></i>Register Slips</a>
                                                 <span class="arrow">
                                                             <i class="fas fa-angle-right"></i>
                                                     </span>
                                             </li>
                                             <li>
-                                                <a href="subscriber_bordereau_memory.html">
+                                                <a href="subscriber_bordereau_memory.php">
                                                     <i class="fas fa-save"></i>Archives</a>
                                                 <span class="arrow">
                                                             <i class="fas fa-angle-right"></i>
                                                     </span>
                                             </li>
                                             <li>
-                                                <a href="subscriber_rapport.html">
-                                                    <i class="fas fa-copy"></i>Report</a>
-                                                <span class="inbox-num">0</span>
-                                            </li>
-                                            <li>
-                                                <a href="commerce_checkout.html">
+                                                <a href="commerce_checkout.php">
                                                     <i class="fas fa-question"></i>FAQs</a>
                                                 <!-- <span class="arrow">
                                                         <i class="fas fa-angle-right"></i>
                                                 </span> -->
                                             </li>
                                             <!-- <li>
-                                                <a href="commerce_checkout.html">
+                                                <a href="commerce_checkout.php">
                                                     <i class="fas fa-exclamation-triangle"></i>About Us</a>
                                             </li> -->
 
@@ -411,29 +230,53 @@
                                 </section>
                                 <!-- END BREADCRUMB-->
 
-
                                 <!-- *************************************
-																************   section Alert *************
-																************************************** -->
-                                <section class="alert-wrap p-t-10 p-b-0 d-none" style="margin-top: -40px;">
-                                    <div class="container">
-                                        <!-- ALERT-->
-                                        <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per m-b-30" role="alert">
-                                            <i class="zmdi zmdi-check-circle"></i>
-                                            <span class="content">You successfully read this important alert message.</span>
-                                            <button class="close" type="button" data-dismiss="alert" aria-label="Close">
-																								<span aria-hidden="true">
-																										<i class="zmdi zmdi-close-circle"></i>
-																								</span>
-																						</button>
-                                        </div>
-                                        <!-- END ALERT-->
-                                    </div>
-                                </section>
+                                ************   section Alert *************
+                                ************************************** -->
+                                <?php 
+                                    if (isset($msg)){
+                                        ?>
+                                        <section class="alert-wrap p-t-10 p-b-0" style="margin-top: -40px;">
+                                            <div class="container">
+                                                <!-- ALERT-->
+                                                <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per m-b-30" role="alert">
+                                                    <i class="zmdi zmdi-check-circle"></i>
+                                                    <span class="content"><?php echo $msg; ?></span>
+                                                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">
+                                                            <i class="zmdi zmdi-close-circle"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                                <!-- END ALERT-->
+                                            </div>
+                                        </section>
+                                        <?php
+                                    }
+                                    
+                                    if (isset($msgError)){
+                                        ?>
+                                        <section class="alert-wrap p-t-10 p-b-0" style="margin-top: -40px;">
+                                            <div class="container">
+                                                <!-- ALERT-->
+                                                <div class="alert alert-danger alert-dismissible fade show au-alert au-alert--70per m-b-30" role="alert">
+                                                    <i class="zmdi zmdi-close-circle"></i>
+                                                    <span class="content"><?php echo $msgError; ?></span>
+                                                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">
+                                                            <i class="zmdi zmdi-close-circle"></i>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                                <!-- END ALERT-->
+                                            </div>
+                                        </section>
+                                        <?php
+                                    }
+                                ?>
                                 <!-- *************************************
-																************   section Alert *************
-																************************************** -->
-
+                                ************   section Alert *************
+                                ************************************** -->
 
                                 <!-- PAGE CONTENT-->
                                 <div class="page-content" style="margin-top: 0px;">
@@ -446,24 +289,6 @@
 
                                             <div class="table-data__tool">
                                                 <div class="table-data__tool-left">
-                                                    <div class="rs-select2--light rs-select2--md">
-                                                        <select class="js-select2" name="property">
-                                                                <option selected="selected">All Properties</option>
-                                                                <option value="">Option 1</option>
-                                                                <option value="">Option 2</option>
-                                                        </select>
-                                                        <div class="dropDownSelect2"></div>
-                                                    </div>
-                                                    <div class="rs-select2--light rs-select2--sm">
-                                                        <select class="js-select2" name="time">
-                                                                <option selected="selected">Today</option>
-                                                                <option value="">3 Days</option>
-                                                                <option value="">1 Week</option>
-                                                        </select>
-                                                        <div class="dropDownSelect2"></div>
-                                                    </div>
-                                                    <button class="au-btn-filter">
-                                                        <i class="zmdi zmdi-filter-list"></i>filters</button>
                                                 </div>
                                                 <div class="table-data__tool-right">
                                                     <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#largeModal">
@@ -488,14 +313,14 @@
                                                                             <div class="col-6">
                                                                                 <div class="form-group">
                                                                                     <label for="cc-exp" class="control-label mb-1">First-name</label>
-                                                                                    <input id="cc-exp" name="cc-exp" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <input id="cc-exp" name="fname" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
                                                                                     <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-6">
                                                                                 <div class="form-group">
                                                                                     <label for="cc-exp" class="control-label mb-1">Second-name</label>
-                                                                                    <input id="cc-exp" name="cc-exp" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <input id="cc-exp" name="sname" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
                                                                                     <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
                                                                                 </div>
                                                                             </div>
@@ -503,15 +328,15 @@
                                                                         <div class="row">
                                                                             <div class="col-6">
                                                                                 <div class="form-group">
-                                                                                    <label for="cc-exp" class="control-label mb-1">Last-name</label>
-                                                                                    <input id="cc-exp" name="cc-exp" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <label for="cc-exp" class="control-label mb-1">Roll Number</label>
+                                                                                    <input id="cc-exp" name="rn" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
                                                                                     <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-6">
                                                                                 <div class="form-group">
-                                                                                    <label for="cc-exp" class="control-label mb-1">Roll Number</label>
-                                                                                    <input id="cc-exp" name="cc-exp" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <label for="cc-exp" class="control-label mb-1">Phone</label>
+                                                                                    <input id="cc-exp" name="phone" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
                                                                                     <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
                                                                                 </div>
                                                                             </div>
@@ -520,14 +345,14 @@
                                                                             <div class="col-8">
                                                                                 <div class="form-group">
                                                                                     <label for="cc-exp" class="control-label mb-1">E-mail</label>
-                                                                                    <input id="cc-exp" name="cc-exp" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <input id="cc-exp" name="email" type="text" class="form-control cc-exp" value="" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
                                                                                     <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-4">
                                                                                 <label for="x_card_code" class="control-label mb-1">Gender</label>
                                                                                 <div class="rs-select2--dark rs-select2--sm rs-select2--dark2" style="width:100%;">
-                                                                                    <select class="js-select2" name="type">
+                                                                                    <select class="js-select2" name="gender">
                                                                                         <option selected="selected">Select</option>
                                                                                         <option value="M">Man</option>
                                                                                         <option value="F">Woman</option>
@@ -537,7 +362,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div>
-                                                                            <button type="submit" class="btn btn-lg  btn-block  au-btn au-btn-icon au-btn--green au-btn--small">
+                                                                            <button type="submit" name="Add_subscriber" class="btn btn-lg  btn-block  au-btn au-btn-icon au-btn--green au-btn--small">
                                                                                 <span id="payment-button-amount">Add Student</span>
                                                                                 <!-- <i class="fa fa-send"></i> -->
                                                                                 <span id="payment-button-sending" style="display:none;">Adding…</span>
@@ -621,6 +446,110 @@
                                             </style>
 
 
+
+                                            <?php
+
+                                                $query_select_modal= $db->prepare("SELECT * FROM subscribers WHERE isActive=:isActive ORDER BY id");
+                                                $query_select_modal->execute(array(
+                                                    "isActive" => 1
+                                                ));
+
+                                                foreach($query_select_modal as $data_subscriber){
+                                                    ?>
+
+                                                    <!-- modal large -->
+                                                    <div class="modal fade" id="largeModal<?php echo $data_subscriber['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" style="width: 600px;" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-light">
+                                                                    <h5 class="modal-title" id="largeModalLabel">Add Student</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="##" style="padding: 25px;">
+                                                                    <!-- <div class="card">
+                                                                        <div class="card-body"> -->
+                                                                    <form action="" method="post" novalidate="novalidate">
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="cc-exp" class="control-label mb-1">First-name</label>
+                                                                                    <input id="cc-exp" name="fname" type="text" class="form-control cc-exp" value="<?php echo $data_subscriber['f_name']; ?>" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="cc-exp" class="control-label mb-1">Second-name</label>
+                                                                                    <input id="cc-exp" name="sname" type="text" class="form-control cc-exp" value="<?php echo $data_subscriber['s_name']; ?>" data-val="true" data-val-required="Please enter the quantity of the item" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="cc-exp" class="control-label mb-1">Roll Number</label>
+                                                                                    <input id="cc-exp" name="rn" type="text" class="form-control cc-exp" value="<?php echo $data_subscriber['roll_number']; ?>" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="cc-exp" class="control-label mb-1">Phone</label>
+                                                                                    <input id="cc-exp" name="phone" type="text" class="form-control cc-exp" value="<?php echo $data_subscriber['phone']; ?>" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-8">
+                                                                                <div class="form-group">
+                                                                                    <label for="cc-exp" class="control-label mb-1">E-mail</label>
+                                                                                    <input id="cc-exp" name="email" type="text" class="form-control cc-exp" value="<?php echo $data_subscriber['email']; ?>" data-val="true" data-val-required="Please enter the card expiration" data-val-cc-exp="Please enter a valid month and year" placeholder="" autocomplete="cc-exp">
+                                                                                    <span class="help-block" data-valmsg-for="cc-exp" data-valmsg-replace="true"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-4">
+                                                                                <label for="x_card_code" class="control-label mb-1">Gender</label>
+                                                                                <div class="rs-select2--dark rs-select2--sm rs-select2--dark2" style="width:100%;">
+                                                                                    <select class="js-select2" name="gender">
+                                                                                        <option value="<?php echo $data_subscriber['gender']; ?>" selected="selected"><?php echo $data_subscriber['gender']; ?></option>
+                                                                                        <option value="M">Man</option>
+                                                                                        <option value="F">Woman</option>
+                                                                                    </select>
+                                                                                    <div class="dropDownSelect2"></div>
+                                                                                    <input type="text" name="idItem" value="<?php echo $data_subscriber['id']; ?>" style="visibility: hidden; height: 0px;" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <button type="submit" name="Update_subscriber" class="btn btn-lg  btn-block  au-btn au-btn-icon au-btn--green au-btn--small">
+                                                                                <span id="payment-button-amount">Add Student</span>
+                                                                                <!-- <i class="fa fa-send"></i> -->
+                                                                                <span id="payment-button-sending" style="display:none;">Adding…</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                    <!-- </div>
+                                                                    </div> -->
+                                                                </div>
+                                                                <div class="modal-footer" style="padding: 14px 25px;">
+                                                                    <button type="" class="btn btn-danger" data-dismiss="modal" style="font-size: 14px;padding: 8px 20px;">Cancel</button>
+                                                                    <button type="" class="btn btn-primary" style="font-size: 14px;padding: 8px 20px;">Confirm</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- end modal large -->
+
+                                                    <?php
+                                                }
+                                            
+                                            ?>
+
+
                                             <div class="table-responsive table-responsive-data2">
                                                 <table class="table table-data2">
                                                     <thead>
@@ -629,40 +558,94 @@
                                                             <th>Last-name</th>
                                                             <th>Claiming</th>
                                                             <th>Payement</th>
-                                                            <th>bigining of the month</th>
+                                                            <th>bigining</th>
+                                                            <!-- <th>bigining of the month</th> -->
                                                             <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr class="tr-shadow">
 
-                                                            <td>Vianney</td>
-                                                            <td>Rwicha BASWIRA</td>
-                                                            <td><span id="claimPath"><small><i class="fas fa-ban"></i> claim</small></span></td>
-                                                            <td>
-                                                                <span class="status--process">35000.00 RWF<sub id="advensM"><small>+2</small></sub></span>
-                                                            </td>
-                                                            <td>2020-04-23 02:12</td>
-                                                            <td>
-                                                                <div class="table-data-feature" id="p_relative">
-                                                                    <button class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#largeModal">
-                                                                            <i class="zmdi zmdi-edit"></i>
-                                                                    </button>
-                                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="zmdi zmdi-delete"></i>
-                                                                    </button>
-                                                                    <button class="item btnMore" data-toggle="tooltip" data-placement="top" title="More">
-                                                                            <i class="zmdi zmdi-more"></i>
-                                                                    </button>
-                                                                    <div class="dropdownMore boxShadow">
-                                                                        <a href="admin_student_view.html">View</a><br/>
-                                                                        <a href="save_bordereau.html?name&other">Payment</a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="spacer"></tr>
-                                                        <tr class="tr-shadow">
+                                                        <?php
+                                                            if(isset($_POST['search_submit'])){
+                                                                $query_select= $db->prepare("SELECT * FROM subscribers WHERE isActive=:isActive AND roll_number=:roll_number ORDER BY id");
+                                                                $query_select->execute(array(
+                                                                    "isActive" => 1,
+                                                                    "roll_number" => $_POST['search']
+                                                                ));
+                                                            } else{
+                                                                $query_select= $db->prepare("SELECT * FROM subscribers WHERE isActive=:isActive ORDER BY id");
+                                                                $query_select->execute(array(
+                                                                    "isActive" => 1
+                                                                ));
+                                                            }
+
+                                                            foreach($query_select as $data_subscriber){
+                                                                ?>
+
+                                                                <tr class="tr-shadow">
+
+                                                                    <td><?php echo $data_subscriber["f_name"] ?></td>
+                                                                    <td><?php echo $data_subscriber["s_name"] ?></td>
+                                                                    <?php 
+                                                                        if ($data_subscriber["isClaimed"] != 1){
+                                                                            ?>
+                                                                            <td><span id="claimPath"><small><i class="fas fa-ban"></i> claim</small></span></td>
+                                                                            <?php
+                                                                        } else {
+                                                                            ?>
+                                                                            <td><span id="claimPathYes"><small><i class="fas fa-check"></i> claim</small></span></td>
+                                                                            <?php
+                                                                        }
+                                                                    ?>
+                                                                    <td>
+                                                                        <?php
+                                                                            $query_select_payement= $db->prepare("SELECT * FROM payement WHERE roll_number=:roll_number");
+                                                                            $query_select_payement->execute(array(
+                                                                                "roll_number" => $data_subscriber["roll_number"]
+                                                                            ));
+                                                                            $total_payed = 0;
+                                                                            foreach($query_select_payement as $data_subscriber_payement){
+                                                                                $total_payed += $data_subscriber_payement['amount'];
+                                                                            }
+                                                                        ?>
+                                                                        <span class="status--process"><?php echo $total_payed; ?> RWF
+                                                                            <!-- <sub id="advensM"><small>+2</small></sub> -->
+                                                                        </span>
+                                                                    </td>
+                                                                    <td><?php echo $data_subscriber["create_at"] ?></td>
+                                                                    <td>
+                                                                        <div class="table-data-feature" id="p_relative">
+                                                                            <!-- <button class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#largeModal">
+                                                                                    <i class="zmdi zmdi-edit"></i>
+                                                                            </button> -->
+                                                                            <button class="item" data-placement="top" title="Edit" data-toggle="modal" data-target="#largeModal<?php echo $data_subscriber['id']; ?>">
+                                                                                    <i class="zmdi zmdi-edit"></i>
+                                                                            </button>
+                                                                            <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                                    <i class="zmdi zmdi-delete"></i>
+                                                                            </button> -->
+                                                                            <a href="subscribers.php?item_id=<?php echo $data_subscriber['id']; ?>" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                                    <i class="zmdi zmdi-delete"></i>
+                                                                            </a>
+                                                                            <button onclick="openMore(<?php  ?>)" class="item btnMore" data-toggle="tooltip" data-placement="top" title="More">
+                                                                                    <i class="zmdi zmdi-more"></i>
+                                                                            </button>
+                                                                            <!-- <div class="dropdownMore boxShadow" id="more<?php  ?>">
+                                                                                <a href="admin_student_view.php">View</a><br/>
+                                                                                <a href="save_bordereau.php?name&other">Payment</a>
+                                                                            </div> -->
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="spacer"></tr>
+
+                                                                <?php
+                                                            }
+                                                        ?>
+
+
+
+                                                        <!-- <tr class="tr-shadow">
                                                             <td>Sonia</td>
                                                             <td>Olela EMUNGU</td>
                                                             <td><span id="claimPathYes"><small><i class="fas fa-check"></i> claim</small></span></td>
@@ -731,7 +714,7 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                        <tr class="spacer"></tr>
+                                                        <tr class="spacer"></tr> -->
 
                                                     </tbody>
                                                 </table>
@@ -756,7 +739,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="copyright">
-                                <p>Copyright © 2020. All rights reserved. Done by <a href="https://get-softworld.com">Vianney RWICHA && Sonia OLELA</a>.</p>
+                                <p>Copyright © 2021. All rights reserved. Done by <a href="https://get-softworld.com">Vianney RWICHA && KASANGA Jerry</a>.</p>
                             </div>
                         </div>
                     </div>

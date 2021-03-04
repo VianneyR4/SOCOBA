@@ -39,7 +39,7 @@
   }
 
   // Descriptions of all options available on the demo site:
-  // http://lokeshdhakar.com/projects/lightbox2/index.html#options
+  // http://lokeshdhakar.com/projects/lightbox2/index.php#options
   Lightbox.defaults = {
     albumLabel: 'Image %1 of %2',
     alwaysShowNavOnTouchDevices: false,
@@ -431,7 +431,7 @@
       if (this.options.sanitizeTitle) {
         $caption.text(this.album[this.currentImageIndex].title);
       } else {
-        $caption.html(this.album[this.currentImageIndex].title);
+        $caption.php(this.album[this.currentImageIndex].title);
       }
       $caption.fadeIn('fast')
         .find('a').on('click', function(event) {

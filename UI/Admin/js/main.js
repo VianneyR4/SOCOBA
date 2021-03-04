@@ -1456,7 +1456,7 @@
             /*progress bar*/
             that.progressbar({
               update: function (current_percentage, $this) {
-                $this.find('.js-value').html(current_percentage + '%');
+                $this.find('.js-value').php(current_percentage + '%');
               }
             });
           }

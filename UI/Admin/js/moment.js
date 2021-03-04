@@ -3019,7 +3019,7 @@
     // ASP.NET json date format regex
     var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
-    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.php
     // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
     // and further modified to allow for strings containing both week and day
     var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
@@ -3348,7 +3348,7 @@
      * Return a human readable representation of a moment that can
      * also be evaluated to get a new moment which is the same
      *
-     * @link https://nodejs.org/dist/latest/docs/api/util.html#util_custom_inspect_function_on_objects
+     * @link https://nodejs.org/dist/latest/docs/api/util.php#util_custom_inspect_function_on_objects
      */
     function inspect () {
         if (!this.isValid()) {
@@ -4585,7 +4585,7 @@
     hooks.prototype             = proto;
 
     // currently HTML5 input type only supports 24-hour formats
-    hooks.HTML5_FMT = {
+    hooks.php5_FMT = {
         DATETIME_LOCAL: 'YYYY-MM-DDTHH:mm',             // <input type="datetime-local" />
         DATETIME_LOCAL_SECONDS: 'YYYY-MM-DDTHH:mm:ss',  // <input type="datetime-local" step="1" />
         DATETIME_LOCAL_MS: 'YYYY-MM-DDTHH:mm:ss.SSS',   // <input type="datetime-local" step="0.001" />
