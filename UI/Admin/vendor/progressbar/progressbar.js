@@ -621,7 +621,7 @@ var Tweenable = (function () {
  *
  * Based on Easing Equations (c) 2003 [Robert
  * Penner](http://www.robertpenner.com/), all rights reserved. This work is
- * [subject to terms](http://www.robertpenner.com/easing_terms_of_use.html).
+ * [subject to terms](http://www.robertpenner.com/easing_terms_of_use.php).
  */
 
 /*!

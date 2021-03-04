@@ -111,7 +111,7 @@ var Tooltip = function () {
    *      Delay showing and hiding the tooltip (ms) - does not apply to manual trigger type.
    *      If a number is supplied, delay is applied to both hide/show.
    *      Object structure is: `{ show: 500, hide: 100 }`
-   * @param {Boolean} options.html=false - Insert HTML into the tooltip. If false, the content will inserted with `innerText`.
+   * @param {Boolean} options.php=false - Insert HTML into the tooltip. If false, the content will inserted with `innerText`.
    * @param {String|PlacementFunction} options.placement='top' - One of the allowed placements, or a function returning one of them.
    * @param {String} [options.template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>']
    *      Base HTML to used when creating the tooltip.
@@ -124,11 +124,11 @@ var Tooltip = function () {
    *      You may pass multiple triggers; separate them with a space. `manual` cannot be combined with any other trigger.
    * @param {HTMLElement} options.boundariesElement
    *      The element used as boundaries for the tooltip. For more information refer to Popper.js'
-   *      [boundariesElement docs](https://popper.js.org/popper-documentation.html)
+   *      [boundariesElement docs](https://popper.js.org/popper-documentation.php)
    * @param {Number|String} options.offset=0 - Offset of the tooltip relative to its reference. For more information refer to Popper.js'
-   *      [offset docs](https://popper.js.org/popper-documentation.html)
+   *      [offset docs](https://popper.js.org/popper-documentation.php)
    * @param {Object} options.popperOptions={} - Popper options, will be passed directly to popper instance. For more information refer to Popper.js'
-   *      [options docs](https://popper.js.org/popper-documentation.html)
+   *      [options docs](https://popper.js.org/popper-documentation.php)
    * @return {Object} instance - The generated tooltip instance
    */
   function Tooltip(reference, options) {
@@ -268,7 +268,7 @@ var Tooltip = function () {
       }
 
       // create tooltip node
-      var tooltipNode = this._create(reference, options.template, title, options.html);
+      var tooltipNode = this._create(reference, options.template, title, options.php);
 
       // Add `aria-describedby` to our reference element for accessibility reasons
       reference.setAttribute('aria-describedby', tooltipNode.id);

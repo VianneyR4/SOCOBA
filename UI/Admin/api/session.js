@@ -1,4 +1,5 @@
-localStorage.getItem("token") == null ? window.location = SOURCE_URL + "UI/Admin/login.html?status=0" : "";
+localStorage.getItem("token") == null ? window.location = SOURCE_URL + "UI/Admin/login.php?status=0" : "";
+// localStorage.getItem("token") == null ? window.location = "login.php?status=0" : "";
 console.log("Token kye", localStorage.getItem("token"));
 
 new Vue({
@@ -7,7 +8,8 @@ new Vue({
         return {
             admin: "",
             token: null,
-            SOURCE_URL: 'file:///D:/Sonia/',
+            // SOURCE_URL: 'file:///D:/Sonia/',
+            SOURCE_URL: 'http://localhost/SOCOBA/',
             showAccountDropdownVar: false,
         }
     },
@@ -20,7 +22,7 @@ new Vue({
                     console.log("profile: ", this.admin);
                 } else {
                     console.log("User not found with status ", response.status, "Message: ", response.message);
-                    window.location = this.SOURCE_URL + "UI/Admin/login.html?status=1";
+                    window.location = this.SOURCE_URL + "UI/Admin/login.php?status=1";
                 }
             }
         )
@@ -35,7 +37,7 @@ new Vue({
 const logout = () => {
     alert("You're about to logout!");
     localStorage.removeItem("token");
-    localStorage.getItem("token") == null ? window.location = SOURCE_URL + "UI/Admin/login.html" : "";
+    localStorage.getItem("token") == null ? window.location = SOURCE_URL + "UI/Admin/login.php" : "";
 }
 
 
